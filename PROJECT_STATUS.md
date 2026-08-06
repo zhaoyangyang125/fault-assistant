@@ -16,12 +16,17 @@ feature/database
 - Function Calling 基础学习
 - 多工具调用
 - 多轮历史裁剪
+- 完成 FaultRepository
+- 实现根据 ID 查询故障记录
+- 实现根据 severity 查询多条故障记录
+- 实现根据 severity 统计故障数量
+- Repository 查询功能已实际运行验证
 
 ## 下一步
 
-- 创建数据库连接模块
-- 创建 faults 表
-- 编写 FaultRepository
+- 创建 Service 层
+- 添加 severity 参数校验
+- 由 Service 调用 Repository
 
 ## 当前技术决定
 
