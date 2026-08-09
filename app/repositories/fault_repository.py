@@ -52,12 +52,6 @@ def count_faults_by_severity(severity: str) -> dict:
 # record_id：故障记录ID
 # fetchone：获取一条查询结果
 def get_fault_by_id(record_id: int) -> dict:
-    # 参数必须是正整数
-    if not isinstance(record_id, int) or record_id <= 0:
-        return {
-            "success": False,
-            "message": "record_id必须是正整数"
-        }
 
     conn = get_connection()
     cursor = None

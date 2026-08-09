@@ -10,23 +10,22 @@ feature/database
 
 ## 已完成
 
-- 完成 SQLite 数据库初始化
-- 完成 FaultRepository
-- 实现根据 ID 查询故障记录
-- 实现根据 severity 查询多条故障记录
-- 实现根据 severity 统计故障数量
-- 创建 Service 层
-- Service 实现 record_id 参数校验
-- Service 实现 severity 参数校验
-- 抽取 is_valid_severity 公共校验函数
-- Service 层已实际运行验证
+- 创建 LLM 层
+- 完成 Function Calling 工具定义
+- 完成 tool_executor
+- 完成 chat_service
+- LLM 可调用 Service 查询 SQLite
+- 支持按 ID 查询故障
+- 支持按 severity 查询故障
+- 支持按 severity 统计数量
+- 支持普通非工具对话
+- Function Calling 全链路已实际运行验证
 
 ## 下一步
 
-- 整理 Repository 中重复的参数校验
-- 创建 LLM 层
-- 定义正式 Function Calling tools
-- 让 LLM 调用 Service，而不是直接调用 Repository
+- 提交并推送 LLM 层代码
+- 开始多轮对话历史管理
+- 将之前学习过的按轮 history trimming 接入正式项目
 
 ## 当前技术决定
 
