@@ -10,23 +10,23 @@ feature/database
 
 ## 已完成
 
-- GitHub 仓库初始化
-- main 分支第一次提交
-- SQLite 基础练习
-- Function Calling 基础学习
-- 多工具调用
-- 多轮历史裁剪
+- 完成 SQLite 数据库初始化
 - 完成 FaultRepository
 - 实现根据 ID 查询故障记录
 - 实现根据 severity 查询多条故障记录
 - 实现根据 severity 统计故障数量
-- Repository 查询功能已实际运行验证
+- 创建 Service 层
+- Service 实现 record_id 参数校验
+- Service 实现 severity 参数校验
+- 抽取 is_valid_severity 公共校验函数
+- Service 层已实际运行验证
 
 ## 下一步
 
-- 创建 Service 层
-- 添加 severity 参数校验
-- 由 Service 调用 Repository
+- 整理 Repository 中重复的参数校验
+- 创建 LLM 层
+- 定义正式 Function Calling tools
+- 让 LLM 调用 Service，而不是直接调用 Repository
 
 ## 当前技术决定
 

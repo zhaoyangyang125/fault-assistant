@@ -123,16 +123,17 @@ def get_faults_by_severity(severity) -> dict:
 
         faults  = []
         for row in rows:
-            faults = {
+            fault = {
                 "id": row["id"],
                 "phenomenon": row["phenomenon"],
                 "severity": row["severity"],
                 "status": row["status"],
             }
+            faults.append(fault)
 
         return {
             "success": True,
-            "fault": faults,
+            "faults": faults,
         }
 
     finally:
