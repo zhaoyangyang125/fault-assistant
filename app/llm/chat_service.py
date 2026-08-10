@@ -18,7 +18,9 @@ dashscope.api_key = os.getenv("DASHSCOPE_API_KEY")
 # 中文：向LLM发送用户问题
 # 函数名：ask_model
 # user_input：用户输入
-def ask_model(user_input: str) -> str:
+def ask_model(session_id: str, user_input: str) -> str:
+
+
 
     # 系统消息
     system_message = {
@@ -32,6 +34,7 @@ def ask_model(user_input: str) -> str:
     # + 以前的对话
     # + 当前用户输入
     messages = build_messages(
+        session_id,
         system_message,
         user_input
     )
@@ -113,7 +116,7 @@ def ask_model(user_input: str) -> str:
         current_round.append(final_message)
 
         # 保存完整的一轮
-        add_round(current_round)
+        add_round(session_id,current_round)
 
         return final_message.content
 
@@ -130,6 +133,6 @@ def ask_model(user_input: str) -> str:
     ]
 
     # 保存这一轮
-    add_round(current_round)
+    add_round(session_id,current_round)
 
     return assistant_message.content

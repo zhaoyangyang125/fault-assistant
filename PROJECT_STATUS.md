@@ -2,7 +2,7 @@
 
 ## 当前阶段
 
-正在开发数据库层。
+FastAPI 与 session 会话隔离已完成，准备进入异常处理与日志阶段。
 
 ## 当前分支
 
@@ -30,13 +30,21 @@ feature/database
 - Function Calling 对话可继承上下文
 - 历史记录最多保留最近 5 轮
 - 多轮历史裁剪已实际运行验证
+- 完成 POST /chat API
+- 使用 Pydantic 定义请求数据
+- Swagger /docs 调试成功
+- FastAPI 可调用 LLM Function Calling 完整链路
+- 请求增加 session_id
+- 不同 session 使用独立对话历史
+- session 多轮上下文隔离已实际运行验证
+
 
 ## 下一步
 
-- 接入 FastAPI
-- 创建 POST /chat 接口
-- 使用 Swagger 测试 API
-- 后续实现 session 会话隔离
+- 增加会话清空功能
+- 增加异常处理
+- 增加 logging
+- 整理应用配置
 
 
 ## 当前技术决定

@@ -1,26 +1,26 @@
 from app.llm.chat_service import ask_model
+from fastapi import FastAPI
+from pydantic import BaseModel
+
+app = FastAPI()
 
 
-# 中文：程序入口
-def main() -> None:
-    while True:
-        user_input = input(
-            "\n質問を入力してください（exitで終了）："
-        ).strip()
-
-        if user_input.lower() == "exit":
-            print("終了します。")
-            break
-
-        if not user_input:
-            print("質問を入力してください。")
-            continue
-
-        answer = ask_model(user_input)
-
-        print("\n回答：")
-        print(answer)
+# 中文：聊天请求数据
+# message：用户输入
+class ChatRequest(BaseModel):
+    session_id: str
+    message: str
 
 
-if __name__ == "__main__":
-    main()
+# 中文：聊天接口
+@app.post("/chat")
+def chat(request: ChatRequest) -> dict:
+    answer = ask_model(
+        request.session_id,
+        request.message
+    )
+
+    return {
+        "answer": answer
+    }
+
