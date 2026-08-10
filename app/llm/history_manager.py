@@ -56,3 +56,7 @@ def build_messages(
     )
 
     return messages
+
+def clear_history(session_id: str) -> None:
+    if session_id in session_histories:
+        del session_histories[session_id]

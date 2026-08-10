@@ -37,15 +37,23 @@ feature/database
 - 请求增加 session_id
 - 不同 session 使用独立对话历史
 - session 多轮上下文隔离已实际运行验证
+- 完成基础异常处理
+- 完成 logging 配置
+- 完成环境变量配置管理
+- 增加 .env.example
+- 完成 pytest 基础测试
+- 完成 Service 层自动测试
+- 完成 FastAPI /chat 接口测试
+- 使用 monkeypatch 模拟 LLM 调用
+- 完成 session clear 接口测试
+- 验证 session 历史实际删除
 
 
 ## 下一步
 
-- 增加会话清空功能
-- 增加异常处理
-- 增加 logging
-- 整理应用配置
-
+- 补充 API 参数校验测试
+- 整理测试目录与测试数据
+- 开始日语 Web UI
 
 ## 当前技术决定
 

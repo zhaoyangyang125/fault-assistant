@@ -12,8 +12,11 @@ from app.llm.history_manager import build_messages, add_round
 
 load_dotenv()
 
-dashscope.api_key = os.getenv("DASHSCOPE_API_KEY")
-
+from app.core.config import (
+    DASHSCOPE_API_KEY,
+    LLM_MODEL,
+)
+dashscope.api_key = DASHSCOPE_API_KEY
 
 # 中文：向LLM发送用户问题
 # 函数名：ask_model
@@ -41,11 +44,12 @@ def ask_model(session_id: str, user_input: str) -> str:
 
     # 第一次调用模型
     response = Generation.call(
-        model="qwen3-max",
+        model=LLM_MODEL,
         messages=messages,
         tools=TOOLS,
         result_format="message",
     )
+
 
     assistant_message = response.output.choices[0].message
 
@@ -99,7 +103,7 @@ def ask_model(session_id: str, user_input: str) -> str:
         # 第二次调用模型
         # 让模型根据数据库查询结果生成最终回答
         final_response = Generation.call(
-            model="qwen3-max",
+            model=LLM_MODEL,
             messages=messages,
             tools=TOOLS,
             result_format="message",
