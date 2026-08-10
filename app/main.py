@@ -8,6 +8,10 @@ import logging
 from pydantic import BaseModel, Field, field_validator
 
 
+
+from fastapi.responses import FileResponse
+
+
 # 中文：聊天请求数据
 # session_id：会话ID
 # message：用户输入
@@ -32,6 +36,10 @@ app = FastAPI()
 
 logger = logging.getLogger(__name__)
 
+
+@app.get("/")
+def index():
+    return FileResponse("static/index.html")
 
 
 # 中文：聊天接口

@@ -47,13 +47,16 @@ feature/database
 - 使用 monkeypatch 模拟 LLM 调用
 - 完成 session clear 接口测试
 - 验证 session 历史实际删除
+- Web UI を追加
+- /chat API と Web UI を接続
+- 会話履歴クリア機能を Web UI から利用可能にした
 
 
 ## 下一步
 
-- 补充 API 参数校验测试
-- 整理测试目录与测试数据
-- 开始日语 Web UI
+- Docker 対応
+- デプロイ準備
+- README 整理
 
 ## 当前技术决定
 
