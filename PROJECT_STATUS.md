@@ -2,7 +2,7 @@
 
 ## 当前阶段
 
-FastAPI 与 session 会话隔离已完成，准备进入异常处理与日志阶段。
+Web UI、Docker 与 Render 云部署已完成，进入项目收尾阶段，准备整理 README、架构图并进行最终验证。
 
 ## 当前分支
 
@@ -50,13 +50,18 @@ feature/database
 - Web UI を追加
 - /chat API と Web UI を接続
 - 会話履歴クリア機能を Web UI から利用可能にした
-
+- Docker 完成
+- Render 部署完成
+- SQLite 云端初始化问题已修复
+- 公网 Demo 可访问
 
 ## 下一步
 
-- Docker 対応
-- デプロイ準備
 - README 整理
+- アーキテクチャ図作成
+- 最終テスト
+- Git / GitHub 状態確認
+- Project 1 完了
 
 ## 当前技术决定
 
