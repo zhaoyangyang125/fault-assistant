@@ -1,15 +1,24 @@
-from fastapi import FastAPI, HTTPException
-
-
-from app.llm.chat_service import ask_model
-from app.llm.history_manager import clear_history
-from app.core.logging_config import setup_logging
 import logging
+from contextlib import asynccontextmanager
+
+from fastapi import FastAPI, HTTPException
+from fastapi.responses import FileResponse
 from pydantic import BaseModel, Field, field_validator
 
+from app.core.logging_config import setup_logging
+from app.database.init_database import initialize_database
+from app.database.seed_data import seed_database
+from app.llm.chat_service import ask_model
+from app.llm.history_manager import clear_history
 
 
-from fastapi.responses import FileResponse
+# 中文：FastAPI 启动时初始化数据库
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    initialize_database()
+    seed_database()
+
+    yield
 
 
 # 中文：聊天请求数据
@@ -30,9 +39,12 @@ class ChatRequest(BaseModel):
 
         return value
 
-setup_logging()
-app = FastAPI()
 
+setup_logging()
+
+app = FastAPI(
+    lifespan=lifespan
+)
 
 logger = logging.getLogger(__name__)
 
@@ -42,7 +54,6 @@ def index():
     return FileResponse("static/index.html")
 
 
-# 中文：聊天接口
 # 中文：聊天接口
 @app.post("/chat")
 def chat(request: ChatRequest) -> dict:
@@ -78,7 +89,6 @@ def chat(request: ChatRequest) -> dict:
         )
 
 
-    
 # 中文：清空指定会话的历史记录
 @app.post("/sessions/{session_id}/clear")
 def clear_session(session_id: str) -> dict:
@@ -88,5 +98,3 @@ def clear_session(session_id: str) -> dict:
         "success": True,
         "message": "会話履歴を削除しました。"
     }
-
-
