@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>障害記録検索アシスタント</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+        }
+
+        .container {
+            width: 800px;
+            max-width: 95%;
+            margin: 40px auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+        }
+
+        .header {
+            padding: 20px;
+            background: #20232a;
+            color: white;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 22px;
+        }
+
+        .chat-area {
+            height: 500px;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .message {
+            margin-bottom: 16px;
+            padding: 12px 16px;
+            border-radius: 10px;
+            line-height: 1.6;
+            white-space: pre-wrap;
+        }
+
+        .user-message {
+            background: #e7f1ff;
+            margin-left: 80px;
+        }
+
+        .assistant-message {
+            background: #f1f1f1;
+            margin-right: 80px;
+        }
+
+        .input-area {
+            display: flex;
+            gap: 10px;
+            padding: 20px;
+            border-top: 1px solid #ddd;
+        }
+
+        #message {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        #send-button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            background: #20232a;
+            color: white;
+            cursor: pointer;
+        }
+
+        #send-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .error-message {
+            background: #ffe5e5;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="header">
+        <h1>障害記録検索アシスタント</h1>
+    </div>
+
+    <div id="chat-area" class="chat-area">
+
+        <div class="message assistant-message">
+            障害記録について質問してください。
+        </div>
+
+    </div>
+
+    <div class="input-area">
+
+        <input
+            id="message"
+            type="text"
+            placeholder="例：重大度highの故障は何件ありますか？"
+        >
+
+        <button id="send-button">
+            送信
+        </button>
+
+        <button id="clear-button">
+            会話をクリア
+        </button>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    const messageInput =
+        document.getElementById("message")
+
+    const sendButton =
+        document.getElementById("send-button")
+
+    const chatArea =
+        document.getElementById("chat-area")
+
+    const clearButton =
+        document.getElementById("clear-button")
+
+
+    // 中文：给当前浏览器生成一个简单的会话ID
+    const sessionId =
+        "web-user-" + crypto.randomUUID()
+
+
+    // 中文：向聊天区域增加一条消息
+    function addMessage(text, className) {
+
+        const messageDiv =
+            document.createElement("div")
+
+        messageDiv.className =
+            "message " + className
+
+        messageDiv.textContent = text
+
+        chatArea.appendChild(messageDiv)
+
+        chatArea.scrollTop =
+            chatArea.scrollHeight
+    }
+
+
+    // 中文：发送聊天请求
+    async function sendMessage() {
+
+        const message =
+            messageInput.value.trim()
+
+        if (!message) {
+            return
+        }
+
+
+        addMessage(
+            message,
+            "user-message"
+        )
+
+
+        messageInput.value = ""
+
+        sendButton.disabled = true
+
+
+        try {
+
+            const response =
+                await fetch(
+                    "/chat",
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body: JSON.stringify({
+                            session_id: sessionId,
+                            message: message
+                        })
+                    }
+                )
+
+
+            const data =
+                await response.json()
+
+
+            if (!response.ok) {
+
+                addMessage(
+                    data.detail || "エラーが発生しました。",
+                    "error-message"
+                )
+
+                return
+            }
+
+
+            addMessage(
+                data.answer,
+                "assistant-message"
+            )
+
+        } catch (error) {
+
+            addMessage(
+                "サーバーに接続できませんでした。",
+                "error-message"
+            )
+
+        } finally {
+
+            sendButton.disabled = false
+
+            messageInput.focus()
+        }
+    }
+
+
+        // 中文：清空当前会话历史
+    async function clearConversation() {
+
+        try {
+
+            const response =
+                await fetch(
+                    "/sessions/" + sessionId + "/clear",
+                    {
+                        method: "POST"
+                    }
+                )
+
+            const data =
+                await response.json()
+
+            if (!response.ok) {
+
+                addMessage(
+                    data.detail || "会話履歴の削除に失敗しました。",
+                    "error-message"
+                )
+
+                return
+            }
+
+            // 中文：清空网页上的聊天内容
+            chatArea.innerHTML = ""
+
+            addMessage(
+                "会話履歴をクリアしました。",
+                "assistant-message"
+            )
+
+        } catch (error) {
+
+            addMessage(
+                "サーバーに接続できませんでした。",
+                "error-message"
+            )
+        }
+    }
+
+    // 中文：点击发送按钮
+    sendButton.addEventListener(
+        "click",
+        sendMessage
+    )
+
+    clearButton.addEventListener(
+        "click",
+        clearConversation
+    )
+
+    // 中文：按Enter发送
+    messageInput.addEventListener(
+        "keydown",
+        function(event) {
+
+            if (event.key === "Enter") {
+                sendMessage()
+            }
+        }
+    )
+
+</script>
+
+</body>
+
+</html>
